@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Damla Avara - Hayvan Bağış Sayfası</title>
+  <style>
+    /* Ana Stiller */
+    :root {
+      --main-bg-color: #121212;
+      --accent-color: #9c27b0;
+      --light-purple: #bb86fc;
+      --text-color: #ffffff;
+      --section-bg: rgba(30, 30, 30, 0.7);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--main-bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* Header Bölümü */
+    header {
+      background: linear-gradient(135deg, #2e0245, #190125);
+      padding: 1rem;
+      position: fixed;
+      width: 100%;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    .logo h1 {
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--light-purple), #f3e5f5);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+    
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    nav a:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-3px);
+    }
+    
+    /* Hero Bölümü */
+    .hero {
+      height: 100vh;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/800');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .profile-container {
+      position: relative;
+      margin-bottom: 2rem;
+      animation: floatAnimation 3s ease-in-out infinite;
+    }
+    
+    .profile-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent-color);
+      box-shadow: 0 0 20px var(--accent-color);
+    }
+    
+    .profile-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--light-purple), #f3e5f5);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: slideIn 1s ease-out;
+    }
+    
+    .hero-content p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      opacity: 0;
+      animation: fadeIn 1s ease-in 0.5s forwards;
+    }
+    
+    .cta-button {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(156, 39, 176, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0;
+      animation: fadeIn 1s ease-in 1s forwards, pulse 2s infinite;
+    }
+    
+    .cta-button:hover {
+      background-color: #7b1fa2;
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(156, 39, 176, 0.7);
+    }
+    
+    /* Bölümler */
+    section {
+      padding: 5rem 2rem;
+      background-color: var(--section-bg);
+      margin: 1rem 0;
+      border-radius: 10px;
+      max-width: 1200px;
+      margin: 2rem auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    section h2 {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: var(--light-purple);
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-color), var(--light-purple));
+      border-radius: 2px;
+    }
+    
+    /* Hayvan Kartları */
+    .animals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 3rem;
+    }
+    
+    .animal-card {
+      background: linear-gradient(145deg, #1e1e1e, #2d2d2d);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: slideUp 0.6s ease-out forwards;
+    }
+    
+    .animal-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .animal-card:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    .animal-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(156, 39, 176, 0.3);
+    }
+    
+    .animal-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .animal-icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: var(--accent-color);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .animal-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+    
+    .card-content {
+      padding: 20px;
+    }
+    
+    .card-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--light-purple);
+    }
+    
+    .card-content p {
+      margin-bottom: 15px;
+      color: #cccccc;
+    }
+    
+    .donate-btn {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: inline-block;
+      text-decoration: none;
+    }
+    
+    .donate-btn:hover {
+      background-color: #7b1fa2;
+      transform: scale(1.05);
+    }
+    
+    /* Bağış Formu */
+    .donation-form {
+      background: linear-gradient(145deg, #1e1e1e, #2d2d2d);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--light-purple);
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(156, 39, 176, 0.3);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 8px rgba(156, 39, 176, 0.5);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .submit-btn {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(156, 39, 176, 0.5);
+    }
+    
+    .submit-btn:hover {
+      background-color: #7b1fa2;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(156, 39, 176, 0.7);
+    }
+    
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, #2e0245, #190125);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .footer-section h3 {
+      color: var(--light-purple);
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50%;
+      height: 2px;
+      background-color: var(--accent-color);
+    }
+    
+    .footer-section p {
+      color: #cccccc;
+      margin-bottom: 10px;
+    }
+    
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .social-icons a {
+      color: white;
+      background-color: rgba(156, 39, 176, 0.3);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-5px);
+    }
+    
+    .copyright {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #999;
+      font-size: 0.9rem;
+    }
+    
+    /* Animasyonlar */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes floatAnimation {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(156, 39, 176, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(156, 39, 176, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(156, 39, 176, 0);
+      }
+    }
+    
+    /* Duyarlı Tasarım */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem 0;
+      }
+      
+      nav ul {
+        margin-top: 1rem;
+        gap: 10px;
+      }
+      
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+      
+      .hero-content p {
+        font-size: 1rem;
+      }
+      
+      .profile-img {
+        width: 150px;
+        height: 150px;
+      }
+      
+      section {
+        padding: 3rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9c27b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+      </svg>
+      <h1>Pati Dostları</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#hakkimizda">Hakkımızda</a></li>
+        <li><a href="#hayvanlar">Hayvanlar</a></li>
+        <li><a href="#bagis">Bağış Yap</a></li>
+        <li><a href="#iletisim">İletişim</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="profile-container">
+        <img src="/api/placeholder/400/400" alt="Damla Avara" class="profile-img">
+        <span class="profile-badge">Büyükelçi</span>
+      </div>
+      <div class="hero-content">
+        <h1>Damla Avara</h1>
+        <p>Büyükelçi ve hayvan hakları savunucusu olarak, sokak hayvanları için daha iyi bir gelecek yaratmak amacıyla bu platformu kurdum. Sizlerin de desteğiyle birlikte daha çok can dostumuza ulaşabiliriz.</p>
+        <button class="cta-button">Şimdi Bağış Yap</button>
+      </div>
+    </section>
+
+    <section id="hakkimizda">
+      <h2>Hakkımızda</h2>
+      <p>Pati Dostları, sokak hayvanlarının sağlık, barınma ve beslenme ihtiyaçlarını karşılamak için kurulan bir yardım platformudur. Büyükelçi Damla Avara öncülüğünde başlatılan bu girişim, hayvan hakları konusunda farkındalık yaratmayı ve toplumsal sorumluluk bilincini artırmayı hedeflemektedir.</p>
+      <p>Misyonumuz, tüm sahipsiz hayvanların güvenli bir yuva bulmasını sağlamak, sokaktaki canlar için daha yaşanabilir koşullar oluşturmak ve toplumda hayvan sevgisini yaygınlaştırmaktır.</p>
+    </section>
+
+    <section id="hayvanlar">
+      <h2>Yardım Bekleyen Dostlarımız</h2>
+      <div class="animals-grid">
+        <div class="animal-card">
+          <img src="/api/placeholder/400/300" alt="Kedi">
+          <div class="animal-icon">
+            <svg viewBox="0 0 24 24" fill="white">
+              <path d="M12,8L10.67,8.09C9.81,7.07 7.4,4.5 5,4.5C5,4.5 3.03,7.46 4.96,11.41C4.41,12.24 4.07,12.67 4,13.66L2.07,13.95L2.28,14.93L4.04,14.67L4.18,15.38L2.61,16.32L3.08,17.21L4.53,16.32C5.68,18.76 8.59,20 12,20C15.41,20 18.32,18.76 19.47,16.32L20.92,17.21L21.39,16.32L19.82,15.38L19.96,14.67L21.72,14.93L21.93,13.95L20,13.66C19.93,12.67 19.59,12.24 19.04,11.41C20.97,7.46 19,4.5 19,4.5C16.6,4.5 14.19,7.07 13.33,8.09L12,8M9,11A1,1 0 0,1 10,12A1,1 0 0,1 9,13A1,1 0 0,1 8,12A1,1 0 0,1 9,11M15,11A1,1 0 0,1 16,12A1,1 0 0,1 15,13A1,1 0 0,1 14,12A1,1 0 0,1 15,11M11,14H13L12.3,15.39C12.5,16.03 13.06,16.5 13.75,16.5A1.5,1.5 0 0,0 15.25,15H15.75A2,2 0 0,1 13.75,17C13,17 12.35,16.59 12,16V16H12C11.65,16.59 11,17 10.25,17A2,2 0 0,1 8.25,15H8.75A1.5,1.5 0 0,0 10.25,16.5C10.94,16.5 11.5,16.03 11.7,15.39L11,14Z" />
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3>Pamuk</h3>
+            <p>2 yaşında, sokakta yaralı halde bulundu. Tedavi masrafları için desteğinize ihtiyacımız var.</p>
+            <a href="#bagis" class="donate-btn">Bağış Yap</a>
+          </div>
+        </div>
+
+        <div class="animal-card">
+          <img src="/api/placeholder/400/300" alt="Köpek">
+          <div class="animal-icon">
+            <svg viewBox="0 0 24 24" fill="white">
+              <path d="M18,4C16.29,4 15.25,4.33 14.65,4.61C13.88,4.23 13,4 12,4C11,4 10.12,4.23 9.35,4.61C8.75,4.33 7.71,4 6,4C3,4 1,12 1,14C1,14.83 2.32,15.59 4.14,15.9C4.78,18.14 7.8,19.85 11.5,20V15.72C10.91,15.35 10,14.7 10,14C10,13.25 10.77,12.77 11.25,12.44C10.58,12.26 10.09,12 10.09,12C12.72,11.75 13.73,11.13 14.13,10.75C14.69,10.04 14.46,9.18 14.46,9.18C14.46,9.18 14.58,9.23 14.73,9.34C14.85,9.43 15,9.6 15.09,9.92C15.38,9.82 15.73,9.88 15.93,10.08C16.24,10.39 16.15,10.91 15.75,11.06C15.27,11.25 14.69,11.18 14.42,10.84C14.28,10.64 14.26,10.42 14.31,10.26C12.91,9.38 13.07,7.3 13.07,7.3C13.07,7.3 13.72,6.97 14.25,7.28C14.95,7.67 15.7,8.32 15.89,9.22C16.05,9.06 16.2,8.92 16.34,8.83C16.77,8.55 17.12,8.34 17.91,8.13C18.22,8.04 18.69,7.99 19.23,8.05C18.89,10.89 17.91,13.1 17.91,13.1C18.25,13.26 19,13.43 20,12.88C20.19,12.79 20.34,12.68 20.42,12.57C21.2,11.43 21.56,7.53 21.56,7.53C21.56,7.53 20.84,7.84 20.11,7.94C19.73,8 19.3,8 19.06,7.95C18.78,7.89 18.5,7.73 18.5,7.73L18.54,7.57C18.65,7.17 18.82,6.95 19,6.8C19.25,6.59 19.61,6.5 19.92,6.5C20.23,6.5 20.5,6.61 20.5,6.61V5.87C20.5,5.87 20.23,5.78 19.86,5.76C19.5,5.75 19.03,5.86 18.65,6.04C18.24,6.24 17.89,6.54 17.7,6.76C17.59,6.86 17.5,6.95 17.5,6.95C17.5,6.95 17.59,6.17 17.65,5.83C17.72,5.5 17.83,5.37 17.83,5.37C17.83,5.37 17.55,5.13 17.06,5.03C16.56,4.92 15.95,4.97 15.41,5.24C14.85,5.5 14.39,6.05 14.39,6.05C14.39,6.05 14.71,5.7 15.07,5.46C15.44,5.22 15.87,5.11 16.28,5.14C16.3,5.14 16.32,5.14 16.34,5.14C16.44,5.03 16.5,4.96 16.5,4.96C16.5,4.96 16.83,5.16 17.12,5.27C17.5,5.41 17.82,5.49 18.04,5.5C18.14,5.5 18.21,5.5 18.27,5.48C18.14,4.87 17.85,4.41 17.39,4.12C17.09,3.93 16.73,3.8 16.31,3.74C15.9,3.68 15.45,3.66 15,3.73C13.12,3.94 12.23,5 12.23,5C12.23,5 12.29,4.44 12.39,4.05C12.44,3.86 12.5,3.7 12.55,3.6C10.56,4.03 9.19,5.17 8.37,6.14L8.27,6C8.27,6 8.17,5.22 8.75,4.39C7.68,4.22 6.04,4.26 4.92,4.5C3.92,4.95 3.15,5.89 3,6.68C2.84,7.5 2.8,8.06 2.8,8.55V8.83L3,9C2.79,9.15 2.5,9.5 2.34,10.11C2.17,10.78 2.07,11.7 2.26,12.83C2.35,13.41 2.56,13.94 2.91,14.36C3.24,14.78 3.69,15.12 4.22,15.31C4.13,14.97 4.07,14.6 4.03,14.19C3.93,13.39 3.99,12.3 4.22,11.25C4.38,10.47 4.72,9.89 5.03,9.53C5.33,9.17 5.64,9 5.64,9C5.64,9 5.35,9.58 5.2,10.37C5.07,11.14 5.01,12.33 5.3,13.5C5.39,13.95 5.55,14.39 5.78,14.75C6.25,14.83 6.73,14.87 7.21,14.87C9.37,14.97 10.91,14.45 11.61,14.11C11.61,14.15 11.63,14.19 11.65,14.23L11.66,14.24C11.73,14.35 11.82,14.44 11.95,14.5C12.06,14.56 12.2,14.58 12.35,14.58C12.6,14.58 12.86,14.5 13,14.43C13.14,14.35 13.16,14.32 13.16,14.32L13.16,14.33L13.17,14.33C13.19,14.33 13.22,14.32 13.27,14.3L
